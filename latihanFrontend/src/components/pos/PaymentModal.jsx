@@ -1,7 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8000/api";
+import api from "../../services/api";
 
 const formatRupiah = (number) =>
     new Intl.NumberFormat('id-ID', {
@@ -41,9 +39,7 @@ export default function PaymentModal({ cart, total, user, token, onClose, onSucc
         setIsNewCustomer(false);
 
         try {
-            const res = await axios.get(`${BASE_URL}/phone/${phoneInput}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await api.get(`/pelanggan/phone/${phoneInput}`);
             setPelanggan(res.data.data);
             setIsNewCustomer(false);
         } catch {
@@ -94,11 +90,7 @@ export default function PaymentModal({ cart, total, user, token, onClose, onSucc
 
             // buat pelanggan baru jika diperlukan
             if (isNewCustomer && newCustomer.nama && newCustomer.no_hp) {
-                const createRes = await axios.post(
-                    `${BASE_URL}/pelanggan`,
-                    newCustomer,
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
+                const createRes = await api.post('/pelanggan', newCustomer);
                 pelangganId = createRes.data.data.id;
             }
 
@@ -112,13 +104,7 @@ export default function PaymentModal({ cart, total, user, token, onClose, onSucc
                 })),
             };
 
-            const res = await axios.post(`${BASE_URL}/orders`, payload, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            });
+            const res = await api.post('/orders', payload);
 
             onSuccess({
                 ...res.data.data,

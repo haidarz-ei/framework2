@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api, { STORAGE_URL } from "../services/api";
 import PaymentModal from "../components/pos/PaymentModal";
 import ReceiptModal from "../components/pos/ReceiptModal";
-
-const BASE_URL = "http://localhost:8000/api";
-// const BASE_URL = "https://laravel-api.kebunkode.com/api";
 
 
 const formatRupiah = (number) =>
@@ -23,9 +20,11 @@ const ProductImage = ({ src, alt, className }) => {
         return <span className="text-4xl">📦</span>;
     }
 
+    const fullSrc = src.startsWith('http') ? src : `${STORAGE_URL}/${src}`;
+
     return (
         <img
-            src={src}
+            src={fullSrc}
             alt={alt}
             className={className}
             onError={() => setHasError(true)}
@@ -55,9 +54,7 @@ export default function POSPage() {
 
     const fetchCurrentUser = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/user`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await api.get('/user');
             setCurrentUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
         } catch (err) {
@@ -67,9 +64,7 @@ export default function POSPage() {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/produks`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await api.get('/produks');
             const data = res.data.data || res.data;
             setProducts(data);
             const cats = ['Semua', ...new Set(data.map((p) => p.kategori).filter(Boolean))];

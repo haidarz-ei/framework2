@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8000/api";
+import api from "../services/api";
 
 const formatRupiah = (number) =>
     new Intl.NumberFormat('id-ID', {
@@ -41,9 +39,7 @@ export default function PesananPage() {
 
     const fetchOrders = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/orders`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get('/orders');
             setData(res.data.data || res.data);
         } catch (err) {
             console.error(err);

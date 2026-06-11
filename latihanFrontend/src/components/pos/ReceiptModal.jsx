@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 
 const formatRupiah = (number) => 
     new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
@@ -50,13 +50,15 @@ export default function ReceiptModal({ order, onClose }) {
                     <table className="w-full text-xs mb-2">
                         <tbody>
                             {order.items?.map((item, idx) => (
-                                <tr key={idx}>
-                                    <td colSpan={3} className="font-semibold">{item.produk_name}</td>
+                                <Fragment key={idx}>
+                                    <tr>
+                                        <td colSpan={2} className="font-semibold">{item.produk_name}</td>
+                                    </tr>
                                     <tr>
                                         <td className="text-gray-500">{item.quantity} x {formatRupiah(item.price)}</td>
                                         <td className="text-right font-bold">{formatRupiah(item.subtotal)}</td>
                                     </tr>
-                                </tr>
+                                </Fragment>
                             ))}
                         </tbody>
                     </table>

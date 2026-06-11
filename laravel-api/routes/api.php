@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\PelangganController;
 use App\Http\Controllers\Api\PembelianController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\ProfileController;
 
 use Illuminate\Http\Request;
 
@@ -27,7 +28,13 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user(); 
     });
 
-    Route::post('/logout', [AuthController::class, 'logout']); 
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
+    Route::post('/profile/foto', [ProfileController::class, 'uploadFoto']);
 
     // pelanggan
     Route::get('/pelanggan', [PelangganController::class, 'index']);
@@ -47,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pembelians', [PembelianController::class, 'index']);
     Route::post('/pembelians', [PembelianController::class, 'store']);
     Route::get('/pembelians/{pembelian}', [PembelianController::class, 'show']);
-    Route::put('/pembelians/{pembelian}/status', [PembelianController::class, 'updateStatus']);
+    Route::patch('/pembelians/{pembelian}/status', [PembelianController::class, 'updateStatus']);
     Route::delete('/pembelians/{pembelian}', [PembelianController::class, 'destroy']);
 });
 

@@ -7,6 +7,7 @@ import POSPage from '../pages/POSPage';
 import PesananPage from '../pages/PesananPage';
 import PelangganPage from '../pages/PelangganPage';
 import PembelianList from '../pages/PembelianList';
+import Profile from '../pages/Profile';
 
 function MainRoutes() {
   return (
@@ -20,6 +21,7 @@ function MainRoutes() {
       <Route path="/pesanan" element={<PesananPage />} />
       <Route path="/pelanggan" element={<PelangganPage />} />
       <Route path="/pembelian" element={<PembelianList />} />
+      <Route path="/profile" element={<Profile />} />\
       {/* nanti di tambah route lain (order, profile, dll) */}
     </Routes>
   );

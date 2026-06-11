@@ -48,7 +48,7 @@ class PembelianController extends Controller
             'tanggal_pembelian' => 'required|date',
             'keterangan'        => 'nullable|string',
             'items'             => 'required|array|min:1',
-            'items.*.produk_id' => 'required|exists:produks,id',
+            'items.*.produk_id' => 'nullable|exists:produks,id',
             'items.*.quantity'  => 'required|integer|min:1',
             'items.*.harga_beli' => 'required|numeric|min:0',
             // field produk baru (opsional), jika produk_id kosong
@@ -82,7 +82,7 @@ class PembelianController extends Controller
 
                     // auto-generate kodeBarang jika kosong
                     if (empty($np['kodeBarang'])) {
-                        $np['kodeBarang'] = 'BRG-' . strtroupper(substr(md5(uniqid()), 0, 6));
+                        $np['kodeBarang'] = 'BRG-' . strtoupper(substr(md5(uniqid()), 0, 6));
                     }
 
                     $produkBaru = Produk::create([
